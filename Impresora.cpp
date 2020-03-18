@@ -1,6 +1,6 @@
-#include "Operaciones.h"
+#include "Operaciones.cpp"
 
 int main()
 {
-	
+	menu();
 }

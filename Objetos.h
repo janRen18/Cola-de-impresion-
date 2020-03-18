@@ -1,11 +1,12 @@
 #ifndef ObjetosH
 #define ObjetosH
-#include <iostream.h>
+#include <iostream>
 #include <string.h>
+#include <windows.h>
 
-using namespace std::string;
-using namespace std::cout;
-using namespace std::cin;
+using std::string;
+using std::cout;
+using std::cin;
 
 class Documento
 {
@@ -14,7 +15,7 @@ class Documento
 		int Paginas;
 		string Texto;
 		Documento *Sig;
-		friend Cola;
+		friend class Cola;
 	public:
 		Documento();
 		~Documento();
@@ -25,12 +26,24 @@ class Documento
 
 Documento::Documento()
 {
-	Titulo=Documento::GetTitulo();
-	Paginas=Documento::GetPagina();
-	Texto=Documento::GetTexto();
+	Sig++;
+	Sig->Titulo=Sig->GetTitulo();
+	Sig->Paginas=Sig->GetPagina();
+	Sig->Texto=Sig->GetTexto();
 }
 
 Documento::~Documento(){}
+
+string Documento::GetTitulo()
+{
+	string tit;
+	
+	cout<<"Ingresar texto del documento: ";
+	cin.ignore();
+	getline(cin, tit);
+	
+	return tit;
+}
 
 int Documento::GetPagina()
 {
@@ -47,19 +60,10 @@ string Documento::GetTexto()
 	string txt;
 	
 	cout<<"Ingresar texto del documento: ";
-	cin>>txt;
+	getline(cin, txt);
+	cin.ignore();
 	
 	return txt;
-}
-
-string Documento::GetTitulo()
-{
-	string tit;
-	
-	cout<<"Ingresar texto del documento: ";
-	cin>>tit;
-	
-	return tit;
 }
 
 class Cola
@@ -71,23 +75,27 @@ class Cola
 	public:
 		Cola();
 		~Cola();
-		void Encolar(Cola *_Final);
+		Cola* SetInicio();
+		void Encolar();
 		void Desencolar();
-		void Imprimir(bool Personalizar);
-		void Imprimir(Cola *aux);
-		void Imprimir(Cola *Acumulador=NULL, int Pagina, int NoDocumento);
+		int Imprimir(Cola *aux);
 };
 
 Cola::Cola(){}
 
 Cola::~Cola(){}
 
-void Cola::Encolar(Cola *_Final)
+Cola* Cola::SetInicio()
+{
+	return Inicio;
+}
+
+void Cola::Encolar()
 {
 	Documento _Documentos;
 	
-	Final=_Final+1;
-	Final->Documentos=_Documentos.Documento();
+	Final++;
+	Final->Documentos=_Documentos;
 }
 
 void Cola::Desencolar()
@@ -98,40 +106,31 @@ void Cola::Desencolar()
 	Inicio=_Inicio;
 }
 
-void Cola::Imprimir(bool Personalizar)
+void Espera(int i)
 {
-	switch(Personalizar)
+	if(i==5)
 	{
-		case false:
-			Cola::Imprimir(Cola *aux);
-		case true:
-			Cola::Imprimir(Cola *Acumulador=NULL, int Pagina, int NoDocumento);
+		system("cls");
+	}
+	else
+	{
+		cout<<".";
+		Sleep(100);
 	}
 }
 
-void Cola::Imprimir(Cola *aux)
+int Cola::Imprimir(Cola *aux)
 {
-	if(aux-1>Final)
+	if(aux>Final)
 	{
 		return 0;
 	}
 	else
 	{
-		cout>>aux->Documentos;
-		aux++;
-		Cola::Imprimir(aux);
-	}
-}
-
-void Cola::Imprimir(Cola *Acumulador=NULL, int Pagina, int NoDocumento)
-{
-	if(Acumulador=)
-	{
-		return 0;
-	}
-	else
-	{
-		
+		cout<<"\nImprimiendo pagina "<<aux->Documentos.Paginas;
+		int i=0;
+		Espera(i);
+		Cola::Imprimir(aux++);
 	}
 }
 
